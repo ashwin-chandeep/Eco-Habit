@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: ecohabit-backend
+    env: docker
+    rootDir: backend
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://db.ibynqcedvmawuhetwbao.supabase.co:5432/postgres
+      - key: SPRING_DATASOURCE_USERNAME
+        value: postgres
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: "As#85238523"
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false # Insert your Vercel frontend URL here
