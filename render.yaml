@@ -3,6 +3,7 @@ services:
     name: ecohabit-backend
     env: docker
     rootDir: backend
+    plan: free
     envVars:
       - key: SPRING_DATASOURCE_URL
         value: jdbc:postgresql://db.ibynqcedvmawuhetwbao.supabase.co:5432/postgres
