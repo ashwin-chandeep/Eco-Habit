@@ -3,14 +3,10 @@ spring:
     name: ecohabit-backend
 
   datasource:
-    url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres}"
+    url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?user=postgres.ibynqcedvmawuhetwbao&password=As%2385238523&sslmode=require}"
     username: "${SPRING_DATASOURCE_USERNAME:postgres.ibynqcedvmawuhetwbao}"
     password: "${SPRING_DATASOURCE_PASSWORD:As#85238523}"
     driver-class-name: org.postgresql.Driver
-    hikari:
-      connection-init-sql: "SET application_name='ecohabit'"
-      data-source-properties:
-        sslmode: require
 
   jpa:
     hibernate:
