@@ -5,11 +5,5 @@ services:
     rootDir: backend
     plan: free
     envVars:
-      - key: SPRING_DATASOURCE_URL
-        value: "jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?user=postgres.ibynqcedvmawuhetwbao&password=As%2385238523&sslmode=require"
-      - key: SPRING_DATASOURCE_USERNAME
-        value: postgres.ibynqcedvmawuhetwbao
-      - key: SPRING_DATASOURCE_PASSWORD
-        value: "As#85238523"
       - key: CORS_ALLOWED_ORIGINS
         value: "*"
