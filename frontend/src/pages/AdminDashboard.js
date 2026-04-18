@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Plus, Users, Leaf, Activity, Download, AlertCircle, Edit, Shield, Trophy, Eye } from 'lucide-react';
+import { Trash2, Plus, Users, Leaf, Activity, Download, AlertCircle, Edit, Trophy, Eye } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { adminAPI } from '../services/api';
 import './AdminDashboard.css';

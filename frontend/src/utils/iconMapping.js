@@ -37,8 +37,6 @@ const iconMap = {
   bird: '🐦',
 
   // Achievements
-  seedling: '🌱',
-  herb: '🌿',
   deciduous_tree: '🌳',
   trophy: '🏆',
   earth_americas: '🌍',
