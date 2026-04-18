@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import com.ecohabit.entity.User;
 import com.ecohabit.repository.AchievementRepository;
 import com.ecohabit.repository.HabitLogRepository;
 import com.ecohabit.repository.HabitRepository;
+import com.ecohabit.repository.UserAchievementRepository;
 import com.ecohabit.repository.UserRepository;
 
 import jakarta.validation.Valid;
@@ -46,6 +48,9 @@ public class AdminController {
 
     @Autowired
     private HabitLogRepository habitLogRepository;
+
+    @Autowired
+    private UserAchievementRepository userAchievementRepository;
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -89,16 +94,21 @@ public class AdminController {
     }
 
     @DeleteMapping("/habits/{id}")
+    @Transactional
     public ResponseEntity<?> deleteHabit(@PathVariable Long id) {
         Habit habit = habitRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Habit not found with id " + id));
 
-
+        // Delete all habit logs that reference this habit first
+        List<HabitLog> logs = habitLogRepository.findAll().stream()
+                .filter(log -> log.getHabit() != null && log.getHabit().getId().equals(id))
+                .toList();
+        habitLogRepository.deleteAll(logs);
 
         habitRepository.delete(habit);
         
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Habit deleted successfully.");
+        response.put("message", "Habit and associated logs deleted successfully.");
         return ResponseEntity.ok(response);
     }
     
@@ -113,9 +123,21 @@ public class AdminController {
     }
     
     @DeleteMapping("/achievements/{id}")
+    @Transactional
     public ResponseEntity<?> deleteAchievement(@PathVariable Long id) {
-        achievementRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+        Achievement achievement = achievementRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Achievement not found with id " + id));
+
+        // Delete all user_achievements that reference this achievement first
+        userAchievementRepository.deleteAll(
+            userAchievementRepository.findByAchievement(achievement)
+        );
+
+        achievementRepository.delete(achievement);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Achievement deleted successfully.");
+        return ResponseEntity.ok(response);
     }
     
     @GetMapping("/users/{id}/logs")
@@ -125,9 +147,15 @@ public class AdminController {
     }
     
     @DeleteMapping("/logs/{id}")
+    @Transactional
     public ResponseEntity<?> deleteHabitLog(@PathVariable Long id) {
+        habitLogRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Habit log not found with id " + id));
         habitLogRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Habit log deleted successfully.");
+        return ResponseEntity.ok(response);
     }
     
     @GetMapping("/stats")
