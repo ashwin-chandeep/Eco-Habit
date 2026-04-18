@@ -88,13 +88,11 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteUserLog = async (logId) => {
-    if(window.confirm('Erase this log from existence?')) {
-      try {
-        await adminAPI.deleteUserLog(logId);
-        setUserLogs(userLogs.filter(l => l.id !== logId));
-        fetchData(); // Refresh overall stats
-      } catch(err) { alert('Failed deleting log: ' + err.message); }
-    }
+    try {
+      await adminAPI.deleteUserLog(logId);
+      setUserLogs(userLogs.filter(l => l.id !== logId));
+      fetchData();
+    } catch(err) { alert('Failed deleting log: ' + err.message); }
   };
 
   // Habit Management
@@ -107,7 +105,13 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteHabit = async (id) => {
-    try { await adminAPI.deleteHabit(id); setHabits(habits.filter(h => h.id !== id)); fetchData(); } catch (err) { alert(err.message || 'Failed to delete habit'); }
+    try {
+      await adminAPI.deleteHabit(id);
+      setHabits(prev => prev.filter(h => h.id !== id));
+      fetchData();
+    } catch (err) {
+      alert(err.message || 'Failed to delete habit');
+    }
   };
 
   const handleAddAchievement = async (e) => {
@@ -116,8 +120,14 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteAchievement = async (id) => {
-    try { await adminAPI.deleteAchievement(id); fetchData(); } catch(err) { alert('Failed deleting milestone: ' + err.message); }
-  }
+    try {
+      await adminAPI.deleteAchievement(id);
+      setAchievements(prev => prev.filter(a => a.id !== id));
+      fetchData();
+    } catch(err) {
+      alert('Failed deleting milestone: ' + err.message);
+    }
+  };
 
   const filteredUsers = useMemo(() => users.filter(u => u.username.toLowerCase().includes(userFilter.toLowerCase()) || u.email.toLowerCase().includes(userFilter.toLowerCase())), [users, userFilter]);
   const filteredHabits = useMemo(() => habitCategoryFilter === 'All' ? habits : habits.filter(h => h.category === habitCategoryFilter), [habits, habitCategoryFilter]);
@@ -266,7 +276,7 @@ const AdminDashboard = () => {
                       <div key={log.id} className="habit-card glass-card" style={{borderLeft:'4px solid #4CAF50'}}>
                         <div style={{display:'flex', justifyContent: 'space-between'}}>
                           <b>{log.habit?.name}</b>
-                          <motion.button className="btn-icon" style={{color: 'red'}} onClick={() => handleDeleteUserLog(log.id)} whileHover={{scale: 1.2}}><Trash2 size={16}/></motion.button>
+                          <button className="btn-icon" style={{color: 'red', cursor:'pointer'}} onClick={(e) => { e.stopPropagation(); handleDeleteUserLog(log.id); }}><Trash2 size={16}/></button>
                         </div>
                         <p style={{fontSize:'0.85em', color:'#555', margin:'0.5rem 0'}}>{log.logDate} • {log.pointsEarned} Points</p>
                         {log.notes && <p style={{fontStyle:'italic', fontSize:'0.9em'}}>"{log.notes}"</p>}
@@ -305,9 +315,9 @@ const AdminDashboard = () => {
                       <p className="habit-desc">{habit.description}</p>
                       <div className="habit-footer">
                         <span className="habit-points">+{habit.impactPoints} pts</span>
-                        <div>
-                          <motion.button className="btn-icon" onClick={() => setEditingHabit(habit)}><Edit size={18} /></motion.button>
-                          <motion.button className="btn-icon" whileHover={{ scale: 1.2, color: '#ff3333' }} onClick={() => { if(window.confirm('Delete this habit?')) { handleDeleteHabit(habit.id); } }}><Trash2 size={18} /></motion.button>
+                        <div style={{display:'flex',gap:'0.25rem'}}>
+                          <button className="btn-icon" onClick={(e) => { e.stopPropagation(); setEditingHabit(habit); }}><Edit size={18} /></button>
+                          <button className="btn-icon" style={{cursor:'pointer'}} onClick={(e) => { e.stopPropagation(); e.preventDefault(); handleDeleteHabit(habit.id); }}><Trash2 size={18} color="#ff3333" /></button>
                         </div>
                       </div>
                     </motion.div>
@@ -343,7 +353,7 @@ const AdminDashboard = () => {
                       <p className="habit-desc">Earned when threshold reaches {ach.requiredValue}</p>
                       <div className="habit-footer" style={{borderTop:'1px solid rgba(0,0,0,0.1)', paddingTop:'1rem'}}>
                         <span className="habit-points">+{ach.pointsReward} pts</span>
-                        <motion.button className="btn-icon" whileHover={{ scale: 1.2, color: '#ff3333' }} onClick={() => { if(window.confirm('Erase this badge completely?')) { handleDeleteAchievement(ach.id); } }}><Trash2 size={18} /></motion.button>
+                        <button className="btn-icon" style={{cursor:'pointer'}} onClick={(e) => { e.stopPropagation(); e.preventDefault(); handleDeleteAchievement(ach.id); }}><Trash2 size={18} color="#ff3333" /></button>
                       </div>
                     </motion.div>
                   ))}
