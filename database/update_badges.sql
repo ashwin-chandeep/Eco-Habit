@@ -1,0 +1,12 @@
+-- Update existing achievement badge_icons from emojis to icon names
+UPDATE achievements SET badge_icon = 'seedling' WHERE badge_icon = '🌱';
+UPDATE achievements SET badge_icon = 'herb' WHERE badge_icon = '🌿';
+UPDATE achievements SET badge_icon = 'deciduous_tree' WHERE badge_icon = '🌳';
+UPDATE achievements SET badge_icon = 'trophy' WHERE badge_icon = '🏆';
+UPDATE achievements SET badge_icon = 'earth_americas' WHERE badge_icon = '🌍';
+UPDATE achievements SET badge_icon = 'crown' WHERE badge_icon = '👑';
+UPDATE achievements SET badge_icon = 'fire' WHERE badge_icon = '🔥';
+UPDATE achievements SET badge_icon = 'zap' WHERE badge_icon = '⚡';
+UPDATE achievements SET badge_icon = 'gem' WHERE badge_icon = '💎';
+UPDATE achievements SET badge_icon = 'star2' WHERE badge_icon = '🌟';
+UPDATE achievements SET badge_icon = 'moneybag' WHERE badge_icon = '💰';

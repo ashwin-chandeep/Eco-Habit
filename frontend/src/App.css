@@ -1,0 +1,22 @@
+/* App-level layout — design system is in index.css */
+.App {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height - better for mobile */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1.5rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Viewport height fix for mobile browsers (iOS Safari, Chrome) */
+@supports (min-height: 100dvh) {
+  .App {
+    min-height: 100dvh;
+  }
+}
