@@ -1,12 +1,12 @@
-# Eco-Habit Builder Platform
+# Eco-Habit Builder Platform Integration With Microsoft Azure
 
 A web application where users can build daily eco-conscious habits and track their environmental impact over time.
 
 ## Tech Stack
 
 - **Backend**: Java + Spring Boot
-- **Database**: MySQL
-- **Frontend**: React JS, HTML, CSS, JavaScript (plain CSS, no frameworks)
+- **Database**: MySQL, Azure Database for MySQL (Azure SQL)
+- **Frontend**: React JS, HTML, CSS, JavaScript
 
 ## Features
 
